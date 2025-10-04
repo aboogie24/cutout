@@ -12,8 +12,8 @@ const DEFAULT_API = import.meta?.env?.VITE_API_URL || "http://localhost:8000";
 export default function CutoutUI() {
   const [apiUrl, setApiUrl] = useState<string>(DEFAULT_API);
   const [file, setFile] = useState<File | null>(null);
-  const [width, setWidth] = useState<string>("1920");
-  const [height, setHeight] = useState<string>("900");
+  const [width, setWidth] = useState<string>("");
+  const [height, setHeight] = useState<string>("");
   const [mode, setMode] = useState<"contain" | "cover">("contain");
   const [alphaMatting, setAlphaMatting] = useState<boolean>(false);
   const [feather, setFeather] = useState<string>("2");
@@ -142,6 +142,7 @@ export default function CutoutUI() {
                     min={1}
                     value={width}
                     onChange={(e) => setWidth(e.target.value)}
+                    placeholder="Original"
                     className="w-full rounded-xl border border-slate-200 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                   />
                 </div>
@@ -152,10 +153,12 @@ export default function CutoutUI() {
                     min={1}
                     value={height}
                     onChange={(e) => setHeight(e.target.value)}
+                    placeholder="Original"
                     className="w-full rounded-xl border border-slate-200 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                   />
                 </div>
               </div>
+              <p className="text-[11px] text-slate-500 -mt-2">Leave empty to preserve original dimensions without cropping</p>
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
@@ -231,9 +234,9 @@ export default function CutoutUI() {
           <div className="lg:col-span-2 grid gap-6">
             <div className="bg-white rounded-2xl shadow p-4">
               <h2 className="font-semibold mb-3">Preview</h2>
-              <div className="aspect-[16/9] bg-[repeating-conic-gradient(#f8fafc_0_25%,#e2e8f0_0_50%)] rounded-xl flex items-center justify-center overflow-hidden">
+              <div className="min-h-[400px] max-h-[60vh] bg-[repeating-conic-gradient(#f8fafc_0_25%,#e2e8f0_0_50%)] rounded-xl flex items-center justify-center overflow-auto p-4">
                 {previewUrl ? (
-                  <img src={previewUrl} alt="preview" className="object-contain max-h-[60vh]" />
+                  <img src={previewUrl} alt="preview" className="max-w-full h-auto" />
                 ) : (
                   <div className="text-slate-500 text-sm">No image selected</div>
                 )}
@@ -242,9 +245,9 @@ export default function CutoutUI() {
 
             <div className="bg-white rounded-2xl shadow p-4">
               <h2 className="font-semibold mb-3">Result</h2>
-              <div className="aspect-[16/9] bg-[repeating-conic-gradient(#f8fafc_0_25%,#e2e8f0_0_50%)] rounded-xl flex items-center justify-center overflow-hidden">
+              <div className="min-h-[400px] max-h-[60vh] bg-[repeating-conic-gradient(#f8fafc_0_25%,#e2e8f0_0_50%)] rounded-xl flex items-center justify-center overflow-auto p-4">
                 {resultUrl ? (
-                  <img src={resultUrl} alt="result" className="object-contain max-h-[60vh]" />
+                  <img src={resultUrl} alt="result" className="max-w-full h-auto" />
                 ) : (
                   <div className="text-slate-500 text-sm">Run a cutout to see the output here</div>
                 )}
